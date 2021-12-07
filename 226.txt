@@ -1,0 +1,83 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+set <pair <int , int>> memo;
+int M , N , D;
+
+
+int f(int m,int n){
+	vector <pair <int , int>> process;
+	int ans = 2e9;
+	int i;
+	auto p = make_pair(m , n);
+	if(m == D || n == D){
+		//memo.push_back({m , n});
+		return 0;
+
+		//memo.push_back({m , n});	
+	}else{
+		p = make_pair(0 , n);
+		if( memo.find(p) == memo.end()){
+			//printf("%d %d\n",p.first , p.second);
+			memo.insert(p);
+			process.push_back({p.first , p.second});
+		}
+		p = make_pair(m , 0);
+		if( memo.find(p) == memo.end()){
+			//printf("%d %d\n",p.first , p.second);
+			memo.insert(p);
+			process.push_back({p.first , p.second});
+		}
+		p = make_pair(M , n);
+		if( memo.find(p) == memo.end()){
+			//printf("%d %d\n",p.first , p.second);
+			memo.insert(p);
+			process.push_back({p.first , p.second});
+		}
+		p = make_pair(m , N);
+		if( memo.find(p) == memo.end()){
+			//printf("%d %d\n",p.first , p.second);
+			memo.insert(p);
+			process.push_back({p.first , p.second});
+		}
+		p = make_pair(min(m + n , M) , max(0 , (n - (M - m))));
+		if( memo.find(p) == memo.end()){
+			//printf("%d %d\n",p.first , p.second);
+			memo.insert(p);
+			process.push_back({p.first , p.second});
+		}
+		p = make_pair( max(0 , (m - (N - n))) , min(m + n,N) );
+		if( memo.find(p) == memo.end()){
+			//printf("%d %d\n",p.first , p.second);
+			memo.insert(p);
+			process.push_back({p.first , p.second});
+		}
+		for(i = 0;i < process.size();++i){
+			ans = min(ans , f(process[i].first , process[i].second));
+		}
+		return 1 + ans;
+	}
+
+}
+
+int main(){
+	int T;
+	
+	int t , m , n , d;
+	int result;
+	scanf("%d",&T);
+	for(t = 1;t <= T;++t){
+		scanf("%d %d %d",&M , &N,&D);
+		memo.insert({0 , 0});
+		result = f(0 , 0);
+		if(result == 2e9 + 1){
+			printf("-1\n");
+		}else{
+			printf("%d\n",result);
+		}
+		
+		memo.clear();
+	}
+}
+
+
